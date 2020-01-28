@@ -3,9 +3,7 @@ used_cards = []
 
 
 class Cards:
-    '''
-    Class returns particular cards, hands of players and deck
-    '''
+    '''Class returns particular cards, hands of players and deck'''
 
     value_list = ['A', 'K', 'Q', 'J', 10, 9, 8, 7, 6, 5, 4, 3, 2]
     suit_list = ['clubs', 'diamonds', 'hearts', 'spades']
@@ -44,7 +42,84 @@ class Cards:
 
 
 class Suits:
-    pass
+    temp_list_value = []
+    temp_list_colors = []
+
+    def __init__(self, player_hand, deck_class):
+        self.player_hand = player_hand
+        self.deck = deck_class
+        for i in self.deck:
+            self.temp_list_value.append(i[1])
+            self.temp_list_colors.append(i[0])
+        for i in self.player_hand:
+            self.temp_list_value.append(i[1])
+            self.temp_list_colors.append(i[0])
+        self.value_dict = self.valueSuits()
+        self.colors_dict = self.colorSuits()
+        print(self.value_dict)
+        print(self.colors_dict)
+
+    def colorSuits(self):
+        dict_of_colors = {}
+        for i in self.temp_list_colors:
+            dict_of_colors.update({i: self.temp_list_colors.count(i)})
+        return dict_of_colors
+
+    def valueSuits(self):
+        dict_of_values = {}
+        for i in self.temp_list_value:
+            dict_of_values.update({i: self.temp_list_value.count(i)})
+        return dict_of_values
+
+    def isFourOfKind(self):
+        for i in self.value_dict:
+            if self.value_dict[i] == 4:
+                return True
+        return False
+
+    def isFullHouse(self):
+        three_cards = False
+        two_cards = False
+        for i in self.value_dict:
+            if self.value_dict[i] == 3:
+                three_cards = True
+            if self.value_dict[i] == 2:
+                two_cards = True
+        if three_cards and two_cards:
+            return True
+        else:
+            return False
+
+    def isFlush(self):
+        for i in self.colors_dict:
+            if self.colors_dict[i] == 5:
+                return True
+        return False
+
+    def isTreeOfKind(self):
+        for i in self.value_dict:
+            if self.value_dict[i] == 3:
+                return True
+        return False
+
+    def isTwoPairs(self):
+        two_cards = False
+        two_cards_2 = False
+        for i in self.value_dict:
+            if self.value_dict[i] == 2 and two_cards_2:
+                two_cards = True
+            if self.value_dict[i] == 2:
+                two_cards_2 = True
+        if two_cards and two_cards_2:
+            return True
+        else:
+            return False
+
+    def isPair(self):
+        for i in self.value_dict:
+            if self.value_dict[i] == 2:
+                return True
+        return False
 
 
 playerOneCards = Cards().getPlayerHand()
@@ -54,3 +129,8 @@ deck = Cards().getDeck()
 print('Current Deck: {}'.format(deck))
 print('Used Cards: {}'.format(used_cards))
 
+deck = [['diamonds', 1], ['diamonds', 7], ['diamonds', 6], ['hearts', 8], ['spades', 4]]
+x = [['diamonds', 9], ['diamonds', 2]]
+suit = Suits(x, deck).isFlush()
+
+print(suit)
